@@ -3,7 +3,6 @@ package com.andersondev.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,29 +51,24 @@ public class CourseController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CourseModel> findById(@PathVariable @NotNull @Positive Long id) {
+	public CourseModel findById(@PathVariable @NotNull @Positive Long id) {
 
-		return courseService.findById(id).map(recordNotFound -> ResponseEntity.ok().body(recordNotFound))
-				.orElse(ResponseEntity.notFound().build());
+		return courseService.findById(id);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<CourseModel> update(@PathVariable @NotNull @Positive Long id,
+	public CourseModel update(@PathVariable @NotNull @Positive Long id,
 			@RequestBody @Valid CourseModel course) {
 
-		return courseService.update(id, course).map(recordNotFound -> ResponseEntity.ok().body(recordNotFound))
-				.orElse(ResponseEntity.notFound().build());
+		return courseService.update(id, course);
 
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable @NotNull @Positive Long id) {
 
-		if (courseService.delete(id)) {
-
-			return ResponseEntity.noContent().<Void>build();
-		}
-		return ResponseEntity.notFound().build();
+		courseService.delete(id);
 
 	}
 

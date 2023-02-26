@@ -3,12 +3,11 @@ package com.andersondev.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import com.andersondev.exceptions.RecordNotFoundException;
 import com.andersondev.model.CourseModel;
 import com.andersondev.repository.CourseRepository;
 
@@ -32,9 +31,9 @@ public class CourseService {
 		return courseRepository.findAll();
 	}
 
-	public Optional<CourseModel> findById(@PathVariable @NotNull @Positive Long id) {
+	public CourseModel findById(@PathVariable @NotNull @Positive Long id) {
 
-		return courseRepository.findById(id);
+		return courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
 
 	}
 
@@ -44,7 +43,7 @@ public class CourseService {
 
 	}
 
-	public Optional<CourseModel> update(@NotNull @Positive Long id, @Valid CourseModel course) {
+	public CourseModel update(@NotNull @Positive Long id, @Valid CourseModel course) {
 
 		return courseRepository.findById(id).map(recordNotFound -> {
 
@@ -52,17 +51,16 @@ public class CourseService {
 			recordNotFound.setCategory(course.getCategory());
 			return courseRepository.save(recordNotFound);
 
-		});
+		}).orElseThrow(() -> new RecordNotFoundException(id));
 
 	}
 
-	public boolean delete(@PathVariable @NotNull @Positive Long id) {
+	public void delete(@PathVariable @NotNull @Positive Long id) {
+		
+		courseRepository.delete(courseRepository.findById(id)
+				.orElseThrow(() -> new RecordNotFoundException(id)));
 
-		return courseRepository.findById(id).map(recordNotFound -> {
-			courseRepository.deleteById(id);
-			return true;
-		}).orElse(false);
+		}
 
-	}
-
+	
 }
