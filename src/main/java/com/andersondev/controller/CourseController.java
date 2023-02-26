@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.andersondev.model.CourseModel;
+import com.andersondev.dto.CourseDTO;
 import com.andersondev.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -35,14 +35,14 @@ public class CourseController {
 	}
 
 	@GetMapping
-	public @ResponseBody List<CourseModel> list() {
+	public @ResponseBody List<CourseDTO> list() {
 
 		return courseService.list();
 	}
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public CourseModel create(@RequestBody @Valid CourseModel course) {
+	public CourseDTO create(@RequestBody @Valid CourseDTO course) {
 
 		return courseService.create(course);
 		// return
@@ -51,14 +51,14 @@ public class CourseController {
 	}
 
 	@GetMapping("/{id}")
-	public CourseModel findById(@PathVariable @NotNull @Positive Long id) {
+	public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
 
 		return courseService.findById(id);
 	}
 
 	@PutMapping("/{id}")
-	public CourseModel update(@PathVariable @NotNull @Positive Long id,
-			@RequestBody @Valid CourseModel course) {
+	public CourseDTO update(@PathVariable @NotNull @Positive Long id,
+			@RequestBody @Valid CourseDTO course) {
 
 		return courseService.update(id, course);
 
