@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.andersondev.dto.CourseDTO;
 import com.andersondev.dto.mapper.CourseMapper;
@@ -37,14 +36,14 @@ public class CourseService {
                 .collect(Collectors.toList());
 	}
 
-	public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
+	public CourseDTO findById(@NotNull @Positive Long id) {
 
 		return courseRepository.findById(id).map(courseMapper::toDTO)
                 .orElseThrow(() -> new RecordNotFoundException(id));
 
 	}
 
-	public CourseDTO create(@Valid CourseDTO course) {
+	public CourseDTO create(@Valid @NotNull CourseDTO course) {
 
 		return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
 
@@ -55,7 +54,7 @@ public class CourseService {
 		return courseRepository.findById(id).map(recordNotFound -> {
 
 			recordNotFound.setName(course.name());
-			recordNotFound.setCategory(course.category());
+			recordNotFound.setCategory(this.courseMapper.convertCategoryValue(course.category()));
 			
 			return courseMapper.toDTO(courseRepository.save(recordNotFound));
 
@@ -63,7 +62,7 @@ public class CourseService {
 
 	}
 
-	public void delete(@PathVariable @NotNull @Positive Long id) {
+	public void delete(@NotNull @Positive Long id) {
 		
 		courseRepository.delete(courseRepository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException(id)));
