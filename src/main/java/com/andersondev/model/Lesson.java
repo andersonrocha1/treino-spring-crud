@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 
-@Data
+
 @Entity
 @Table(name="tb_lessons")
 public class Lesson {
@@ -35,6 +35,50 @@ public class Lesson {
 	@JoinColumn(name = "course_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private CourseModel course;
+	
+	public Lesson() {
+		
+	}
+
+	public Lesson(Long id, String name, String youtubeLink, CourseModel course) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.youtubeLink = youtubeLink;
+		this.course = course;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getYoutubeLink() {
+		return youtubeLink;
+	}
+
+	public void setYoutubeLink(String youtubeLink) {
+		this.youtubeLink = youtubeLink;
+	}
+
+	public CourseModel getCourse() {
+		return course;
+	}
+
+	public void setCourse(CourseModel course) {
+		this.course = course;
+	}
 	
 	
 
