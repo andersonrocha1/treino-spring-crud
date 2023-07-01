@@ -57,6 +57,6 @@
 
 ## Agradecimentos
 
-* Link DevSuperior, uma escola fantástica
+* Link Linkedin da mestra Loiane, uma professora incrível
 
     <a href= "https://www.linkedin.com/in/loiane/">Loiane Groner</a>
