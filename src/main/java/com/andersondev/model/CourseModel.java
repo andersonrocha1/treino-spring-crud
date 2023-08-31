@@ -25,9 +25,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 
@@ -127,11 +124,16 @@ public class CourseModel implements Serializable{
 		return lessons;
 	}
 
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
+	}
 
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
 	
 	
 	

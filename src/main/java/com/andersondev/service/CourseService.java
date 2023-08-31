@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import com.andersondev.dto.CourseDTO;
 import com.andersondev.dto.mapper.CourseMapper;
 import com.andersondev.exceptions.RecordNotFoundException;
+import com.andersondev.model.CourseModel;
 import com.andersondev.repository.CourseRepository;
 
 import jakarta.validation.Valid;
@@ -49,12 +50,14 @@ public class CourseService {
 
 	}
 
-	public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO course) {
+	public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO courseDto) {
 
 		return courseRepository.findById(id).map(recordNotFound -> {
-
-			recordNotFound.setName(course.name());
-			recordNotFound.setCategory(this.courseMapper.convertCategoryValue(course.category()));
+			CourseModel course = courseMapper.toEntity(courseDto);
+			recordNotFound.setName(courseDto.name());
+			recordNotFound.setCategory(this.courseMapper.convertCategoryValue(courseDto.category()));
+			recordNotFound.getLessons().clear();
+			course.getLessons().forEach(recordNotFound.getLessons()::add);
 			
 			return courseMapper.toDTO(courseRepository.save(recordNotFound));
 
