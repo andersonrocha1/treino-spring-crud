@@ -1,7 +1,8 @@
 package com.andersondev.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 
 
 
@@ -25,12 +28,20 @@ public class Lesson {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
+	@NotBlank
+	@Length(min = 5, max = 100)
 	@Column(length = 100, nullable = false)
 	private String name;
 	
-	@Column(length = 40, nullable = false)
+	
+	@NotNull
+	@NotBlank
+	@Length(min = 10, max = 11)
+	@Column(length = 11, nullable = false)
 	private String youtubeLink;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "course_id")
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -79,6 +90,8 @@ public class Lesson {
 	public void setCourse(CourseModel course) {
 		this.course = course;
 	}
+	
+	
 	
 	
 

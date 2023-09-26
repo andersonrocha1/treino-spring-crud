@@ -7,7 +7,7 @@ public class RecordNotFoundException extends RuntimeException {
 	public RecordNotFoundException(Long id) {
 		
 		super("Não há registros para o ID informado: " + id);
-		
+		 
 	}
 	
 

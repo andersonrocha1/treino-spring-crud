@@ -30,7 +30,7 @@ public class TreinoSpringCrudApplication {
 			
 			Lesson lesson = new Lesson();
 			lesson.setName("Introdução ao Angular 15");
-			lesson.setYoutubeLink("https://youtu.be/LnORjqZUMIQ");
+			lesson.setYoutubeLink("Lr3d6QhZGlU");
 			lesson.setCourse(curso);
 			curso.getLessons().add(lesson);
 			
