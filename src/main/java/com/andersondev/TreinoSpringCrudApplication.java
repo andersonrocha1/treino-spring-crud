@@ -21,20 +21,25 @@ public class TreinoSpringCrudApplication {
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
 		return args -> {
 			
-			courseRepository.deleteAll();
+			//courseRepository.deleteAll();
 			
-			CourseModel curso = new CourseModel();
-			
-			curso.setName("Angular 15");
-			curso.setCategory(Category.FRONT_END);
-			
-			Lesson lesson = new Lesson();
-			lesson.setName("Introdução ao Angular 15");
-			lesson.setYoutubeLink("Lr3d6QhZGlU");
-			lesson.setCourse(curso);
-			curso.getLessons().add(lesson);
-			
-			courseRepository.save(curso);
+			for(int i = 0; i<20; i++){
+
+				CourseModel curso = new CourseModel();
+				
+				curso.setName("Angular 15" + i);
+				curso.setCategory(Category.FRONT_END);
+				
+				Lesson lesson = new Lesson();
+				lesson.setName("Introdução ao Angular 15");
+				lesson.setYoutubeLink("Lr3d6QhZGlU");
+				lesson.setCourse(curso);
+				curso.getLessons().add(lesson);
+				
+				
+				courseRepository.save(curso);
+			}
+		
 			
 		};
 	}

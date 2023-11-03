@@ -3,18 +3,23 @@ package com.andersondev.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.andersondev.dto.CourseDTO;
+import com.andersondev.dto.CoursePageDTO;
 import com.andersondev.dto.mapper.CourseMapper;
 import com.andersondev.exceptions.RecordNotFoundException;
 import com.andersondev.model.CourseModel;
 import com.andersondev.repository.CourseRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Validated
 @Service
@@ -29,12 +34,18 @@ public class CourseService {
 		this.courseMapper = courseMapper;
 	}
 
-	public List<CourseDTO> list() {
+	public CoursePageDTO list(@PositiveOrZero int pageNumber, 
+	@Positive @Max(100) int pageSize) {
+		
+		Page<CourseModel> pages = courseRepository.findAll(PageRequest.of(pageNumber, pageSize));
+		List<CourseDTO> courses = pages.get().map(courseMapper::toDTO).collect(Collectors.toList());
 
-		return courseRepository.findAll()
+		return new CoursePageDTO(courses, pages.getTotalElements(), pages.getTotalPages()) ;
+				/* 
 				.stream()
                 .map(courseMapper::toDTO)
                 .collect(Collectors.toList());
+				*/
 	}
 
 	public CourseDTO findById(@NotNull @Positive Long id) {
